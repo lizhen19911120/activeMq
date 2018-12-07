@@ -78,7 +78,8 @@ public class Application {
         System.out.println("-----------myListenerContainer1 created--------------");
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        factory.setConcurrency("2");
+        //配置多少个消费任务实例，5-10表示默认每个消费者开5个线程消费，最大10个线程消费；10表示最大开10个线程消费，默认开1个线程消费
+//        factory.setConcurrency("2-3");
         //配置JMS缓存级别
 //        factory.setCacheLevel();
         return factory;
@@ -103,6 +104,27 @@ public class Application {
         factory.setConnectionFactory(connectionFactory);
         factory.setPubSubDomain(true);
         factory.setClientId("client_lizhen");
+        return factory;
+    }
+
+    /**
+     * 定义ListenerContainer容器，这里用在持久化topic消息上
+     * @param connectionFactory spring返回的默认连接工厂
+     * @return
+     */
+    @Bean
+    public JmsListenerContainerFactory<?> myListenerContainer3(ConnectionFactory connectionFactory){
+        System.out.println("-----------myListenerContainer3 created--------------");
+        MySimpleJmsListenerContainerFactory factory = new MySimpleJmsListenerContainerFactory(){
+            @Override
+            protected void initializeContainer(SimpleMessageListenerContainer instance) {
+                instance.setSubscriptionDurable(true);
+                super.initializeContainer(instance);
+            }
+        };
+        factory.setConnectionFactory(connectionFactory);
+        factory.setPubSubDomain(true);
+        factory.setClientId("client_lizhen1");
         return factory;
     }
 
@@ -171,8 +193,8 @@ public class Application {
 //        SpringApplication.run(Application.class, args);
         logger.info("SpringBoot Start Success");
 
-        PromoteActConsumer3 consumer3 = (PromoteActConsumer3)context.getBean("promoteActConsumer3");
-        consumer3.recive();
+//        PromoteActConsumer3 consumer3 = (PromoteActConsumer3)context.getBean("promoteActConsumer3");
+//        consumer3.recive();
     }
 
 

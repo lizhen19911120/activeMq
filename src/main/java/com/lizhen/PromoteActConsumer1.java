@@ -21,9 +21,14 @@ public class PromoteActConsumer1 {
     @JmsListener(destination = "promoteAct", containerFactory = "myListenerContainer1",selector = "JMSXGroupID = 'GroupB' ")
     public void receiveQueue(String consumer) {
         System.out.println(Thread.currentThread().getName()+":------ "+consumer+"消息已经消费了");
+//        try {
+//            Thread.sleep(3000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
     }
 
-    @JmsListener(destination = "America.news", containerFactory = "myListenerContainer",id = "client_s1",subscription = "s1")
+    @JmsListener(destination = "America.news", containerFactory = "myListenerContainer3",subscription = "s1")
     public void receiveTopic(String consumer) {
         System.out.println(Thread.currentThread().getName()+":------ "+consumer+"消息已经消费了");
     }
